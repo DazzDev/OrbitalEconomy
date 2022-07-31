@@ -1,0 +1,12 @@
+name: OrbitalEconomy
+version: '${project.version}'
+main: io.github.dazz.orbitaleconomy.OrbitalEconomy
+api-version: 1.19
+commands:
+  bal:
+    description: Check your balance.
+    aliases: balance
+  earn:
+    description: Gives you a random amount of money between 1 and 10.
+  pay:
+    description: Send another player a certain amount of money.

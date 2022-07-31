@@ -1,0 +1,17 @@
+#OrbitalEconomy - A simple economy plugin
+#Plugin written by DazzDev (dazz#3427) for Orbital Studios
+#Hex color support example: #ff007bDazzDev would be &x&f&f&0&0&7&bDazzDev
+
+BalanceMessage: "&6Your balance is %bal% dollar(s)."
+EarnMessage: "&aYou just earned %amount% dollar(s)."
+PayMessage: "&aYou paid %amount% dollar(s) to %target%."
+ReceiveMessage: "&a%sender% has paid you %amount% dollar(s)."
+InvalidNumberMessage: "&cYou don't have that many dollars or the number you input is invalid."
+InvalidPlayerMessage: "&cYou can't pay dollars to that player."
+PayCorrectUsageMessage: "&cCorrect usage: /pay (user) (amount)."
+NoPermissionMessage: "&cYou don't have permission to do that."
+InvalidSenderMessage: "This command is for players only."
+
+BalancePermission: "orbitaleco.balance"
+EarnPermission: "orbitaleco.earn"
+PayPermission: "orbitaleco.pay"
