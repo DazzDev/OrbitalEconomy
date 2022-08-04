@@ -22,7 +22,10 @@ public final class OrbitalEconomy extends JavaPlugin {
         getCommand("earn").setExecutor(new Earn(database, utils));
         getCommand("pay").setExecutor(new Pay(database, utils));
 
-        database.setupSQL();
+        if (!database.setupSQL()) {
+            getLogger().info("OrbitalEconomy was not able to setup SQLite database, disabling plugin...");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
         saveDefaultConfig();
         reloadConfig();
         getLogger().info("OrbitalEconomy enabled!");

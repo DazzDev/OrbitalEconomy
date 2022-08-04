@@ -16,15 +16,16 @@ public class Database {
     private File dbFile = null;
     public Connection conn = null;
 
-    public void setupSQL() {
+    public boolean setupSQL() {
         dbFile = new File(plugin.getDataFolder(), "database.db");
-        dbFile.getParentFile().mkdir();
+        if (!dbFile.getParentFile().mkdir()) return false;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
             Statement statement = conn.createStatement();
             statement.executeUpdate("create table if not exists economy (uuid string primary key, balance float)");
         } catch (SQLException e) {
             plugin.getLogger().info(e.getMessage());
+            return false;
         } finally {
             try {
                 if (conn != null) conn.close();
@@ -32,6 +33,7 @@ public class Database {
                 plugin.getLogger().info(e.getMessage());
             }
         }
+        return true;
     }
 
     public void insertBalance(OfflinePlayer p) {
