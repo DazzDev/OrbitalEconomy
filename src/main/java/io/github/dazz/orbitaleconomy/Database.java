@@ -73,13 +73,10 @@ public class Database {
     public float getBalance(OfflinePlayer p) {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
-            Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("select * from economy");
-            while (rs.next()) {
-                if (Objects.equals(p.getUniqueId().toString(), rs.getString("uuid"))) {
-                    return rs.getFloat("balance");
-                }
-            }
+            PreparedStatement pstmt = conn.prepareStatement("select balance from economy where uuid=?");
+            pstmt.setString(1, p.getUniqueId().toString());
+            ResultSet rs = pstmt.executeQuery();
+            return rs.getFloat("balance");
         } catch (SQLException e) {
             plugin.getLogger().info(e.getMessage());
         } finally {
