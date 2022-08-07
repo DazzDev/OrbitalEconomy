@@ -3,6 +3,7 @@ package io.github.dazz.orbitaleconomy;
 import org.bukkit.OfflinePlayer;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.sql.*;
 
 public class Database {
@@ -17,8 +18,11 @@ public class Database {
     public Connection conn = null;
 
     public boolean setupSQL() {
-        dbFile = new File(plugin.getDataFolder(), "database.db");
-        if (!dbFile.getParentFile().mkdir()) return false;
+        File dataFolder = plugin.getDataFolder();
+        dbFile = new File(dataFolder, "database.db");
+        if (Files.notExists(dataFolder.toPath())) {
+            if (!dataFolder.mkdir()) return false;
+        }
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
             Statement statement = conn.createStatement();
