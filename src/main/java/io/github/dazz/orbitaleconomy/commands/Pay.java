@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -24,7 +25,7 @@ public class Pay implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
             utils.printInvalidSenderMessage();
             return true;
@@ -39,7 +40,7 @@ public class Pay implements CommandExecutor {
             return true;
         }
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            if (!Objects.equals(offlinePlayer.getName(), args[0]) || offlinePlayer.equals(p)) {
+            if (offlinePlayer.getName() == null || !Objects.equals(offlinePlayer.getName(), args[0]) || offlinePlayer.equals(p)) {
                 continue;
             }
             if (NumberUtils.isCreatable(args[1])) {
@@ -49,7 +50,7 @@ public class Pay implements CommandExecutor {
                         database.updateBalance(offlinePlayer, database.getBalance(offlinePlayer) + amount);
                         database.updateBalance(p, database.getBalance(p) - amount);
                         p.sendMessage(utils.getCfgValue("PayMessage", "&aYou paid %amount% dollar(s) to %target%.").replace("%amount%", String.format("%.2f", amount)).replace("%target%", offlinePlayer.getName()));
-                        if (offlinePlayer.isOnline())
+                        if (offlinePlayer.getPlayer() != null)
                             offlinePlayer.getPlayer().sendMessage(utils.getCfgValue("ReceiveMessage", "&a%sender% has paid you %amount% dollar(s).").replace("%amount%", String.format("%.2f", amount)).replace("%sender%", p.getName()));
                         return true;
                     }
