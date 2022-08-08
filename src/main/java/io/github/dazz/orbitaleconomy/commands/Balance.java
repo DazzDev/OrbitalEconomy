@@ -19,16 +19,16 @@ public class Balance implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (p.hasPermission(utils.getCfgValue("BalancePermission", "orbitaleco.balance"))) {
-                p.sendMessage(utils.getCfgValue("BalanceMessage", "&4Your balance is %bal% dollar(s).").replace("%bal%", String.valueOf(database.getBalance(p))));
-                return true;
-            }
+        if (!(sender instanceof Player)) {
+            utils.printInvalidSenderMessage();
+            return true;
+        }
+        Player p = (Player) sender;
+        if (!p.hasPermission(utils.getCfgValue("BalancePermission", "orbitaleco.balance"))) {
             utils.sendNoPermissionMsg(p);
             return true;
         }
-        utils.printInvalidSenderMessage();
+        p.sendMessage(utils.getCfgValue("BalanceMessage", "&4Your balance is %bal% dollar(s).").replace("%bal%", String.valueOf(database.getBalance(p))));
         return true;
     }
 }

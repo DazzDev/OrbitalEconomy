@@ -1,22 +1,27 @@
 package io.github.dazz.orbitaleconomy;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import java.util.logging.Logger;
 
 public class Utils {
 
-    private final OrbitalEconomy plugin;
+    private final FileConfiguration config;
+    private final Logger logger;
 
-    public Utils(OrbitalEconomy plugin) {
-        this.plugin = plugin;
+    public Utils(FileConfiguration config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
     }
 
     public String getCfgValue(String key, String def) {
-        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString(key, def));
+        return ChatColor.translateAlternateColorCodes('&', config.getString(key, def));
     }
 
     public void printInvalidSenderMessage() {
-        plugin.getLogger().info(getCfgValue("InvalidSenderMessage", "This command is for players only."));
+        logger.info(getCfgValue("InvalidSenderMessage", "This command is for players only."));
     }
 
     public void sendNoPermissionMsg(Player p) {

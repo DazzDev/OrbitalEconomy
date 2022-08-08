@@ -6,6 +6,7 @@ import io.github.dazz.orbitaleconomy.commands.Pay;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.sql.SQLException;
 
 public final class OrbitalEconomy extends JavaPlugin {
@@ -14,20 +15,17 @@ public final class OrbitalEconomy extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        Utils utils = new Utils(this);
-        database = new Database(this);
+        Utils utils = new Utils(this.getConfig(), this.getLogger());
+        database = new Database(this, new File(getDataFolder(), "database.db"));
 
         Bukkit.getPluginManager().registerEvents(new JoinEvent(database), this);
         getCommand("bal").setExecutor(new Balance(database, utils));
         getCommand("earn").setExecutor(new Earn(database, utils));
         getCommand("pay").setExecutor(new Pay(database, utils));
 
-        if (!database.setupSQL()) {
-            getLogger().info("OrbitalEconomy was not able to setup SQLite database, disabling plugin...");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
         saveDefaultConfig();
         reloadConfig();
+
         getLogger().info("OrbitalEconomy enabled!");
     }
 

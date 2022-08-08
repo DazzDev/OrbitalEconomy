@@ -21,18 +21,18 @@ public class Earn implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (p.hasPermission(utils.getCfgValue("EarnPermission", "orbitaleco.earn"))) {
-                int amount = ThreadLocalRandom.current().nextInt(1, 11);
-                database.updateBalance(p, database.getBalance(p) + amount);
-                p.sendMessage(utils.getCfgValue("EarnMessage", "&aYou just earned %amount% dollar(s).").replace("%amount%", amount + ".00"));
-                return true;
-            }
+        if (!(sender instanceof Player)) {
+            utils.printInvalidSenderMessage();
+            return true;
+        }
+        Player p = (Player) sender;
+        if (!p.hasPermission(utils.getCfgValue("EarnPermission", "orbitaleco.earn"))) {
             utils.sendNoPermissionMsg(p);
             return true;
         }
-        utils.printInvalidSenderMessage();
+        int amount = ThreadLocalRandom.current().nextInt(1, 11);
+        database.updateBalance(p, database.getBalance(p) + amount);
+        p.sendMessage(utils.getCfgValue("EarnMessage", "&aYou just earned %amount% dollar(s).").replace("%amount%", amount + ".00"));
         return true;
     }
 }

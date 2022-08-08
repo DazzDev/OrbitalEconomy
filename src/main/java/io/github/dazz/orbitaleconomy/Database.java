@@ -1,5 +1,6 @@
 package io.github.dazz.orbitaleconomy;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.io.File;
@@ -9,17 +10,22 @@ import java.sql.*;
 public class Database {
 
     private final OrbitalEconomy plugin;
+    private final File dbFile;
 
-    public Database(OrbitalEconomy plugin) {
+    public Database(OrbitalEconomy plugin, File dbFile) {
         this.plugin = plugin;
+        this.dbFile = dbFile;
+
+        if (!setupSQL()) {
+            plugin.getLogger().info("OrbitalEconomy was not able to setup SQLite database, disabling plugin...");
+            Bukkit.getPluginManager().disablePlugin(plugin);
+        }
     }
 
-    private File dbFile = null;
     public Connection conn = null;
 
     public boolean setupSQL() {
         File dataFolder = plugin.getDataFolder();
-        dbFile = new File(dataFolder, "database.db");
         if (Files.notExists(dataFolder.toPath())) {
             if (!dataFolder.mkdir()) return false;
         }
