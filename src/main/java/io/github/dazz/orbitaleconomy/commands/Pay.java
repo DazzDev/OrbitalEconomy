@@ -39,7 +39,7 @@ public class Pay implements CommandExecutor {
             return true;
         }
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            if (!Objects.equals(offlinePlayer.getName(), args[0]) || offlinePlayer == p) {
+            if (!Objects.equals(offlinePlayer.getName(), args[0]) || offlinePlayer.equals(p)) {
                 continue;
             }
             if (NumberUtils.isCreatable(args[1])) {
