@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.sql.*;
 
 public class Database {
@@ -17,7 +16,7 @@ public class Database {
         this.dbFile = dbFile;
 
         if (!setupSQL()) {
-            plugin.getLogger().info("OrbitalEconomy was not able to setup SQLite database, disabling plugin...");
+            plugin.getLogger().info("OrbitalEconomy was not able to setup the SQLite database, disabling plugin...");
             Bukkit.getPluginManager().disablePlugin(plugin);
         }
     }
@@ -25,10 +24,6 @@ public class Database {
     public Connection conn = null;
 
     public boolean setupSQL() {
-        File dataFolder = plugin.getDataFolder();
-        if (Files.notExists(dataFolder.toPath())) {
-            if (!dataFolder.mkdir()) return false;
-        }
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
             Statement statement = conn.createStatement();

@@ -15,6 +15,9 @@ public final class OrbitalEconomy extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+        reloadConfig();
+
         Utils utils = new Utils(this.getConfig(), this.getLogger());
         database = new Database(this, new File(getDataFolder(), "database.db"));
 
@@ -22,9 +25,6 @@ public final class OrbitalEconomy extends JavaPlugin {
         getCommand("bal").setExecutor(new Balance(database, utils));
         getCommand("earn").setExecutor(new Earn(database, utils));
         getCommand("pay").setExecutor(new Pay(database, utils));
-
-        saveDefaultConfig();
-        reloadConfig();
 
         getLogger().info("OrbitalEconomy enabled!");
     }
