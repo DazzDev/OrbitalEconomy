@@ -29,7 +29,9 @@ public class Balance implements CommandExecutor {
             utils.sendNoPermissionMsg(p);
             return true;
         }
-        p.sendMessage(utils.getCfgValue("BalanceMessage", "&4Your balance is %bal% dollar(s).").replace("%bal%", String.valueOf(database.getBalance(p))));
+        String message = utils.getCfgValue("BalanceMessage", "&4Your balance is %bal% dollar(s).");
+        message = message.replace("%bal%", String.valueOf(database.getBalance(p)));
+        p.sendMessage(message);
         return true;
     }
 }

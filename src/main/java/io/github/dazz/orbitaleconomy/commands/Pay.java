@@ -49,9 +49,16 @@ public class Pay implements CommandExecutor {
                     if (database.getBalance(p) >= amount && amount > 0) {
                         database.updateBalance(offlinePlayer, database.getBalance(offlinePlayer) + amount);
                         database.updateBalance(p, database.getBalance(p) - amount);
-                        p.sendMessage(utils.getCfgValue("PayMessage", "&aYou paid %amount% dollar(s) to %target%.").replace("%amount%", String.format("%.2f", amount)).replace("%target%", offlinePlayer.getName()));
-                        if (offlinePlayer.getPlayer() != null)
-                            offlinePlayer.getPlayer().sendMessage(utils.getCfgValue("ReceiveMessage", "&a%sender% has paid you %amount% dollar(s).").replace("%amount%", String.format("%.2f", amount)).replace("%sender%", p.getName()));
+                        String payMessage = utils.getCfgValue("PayMessage", "&aYou paid %amount% dollar(s) to %target%.");
+                        payMessage = payMessage.replace("%amount%", String.format("%.2f", amount));
+                        payMessage = payMessage.replace("%target%", offlinePlayer.getName());
+                        p.sendMessage(payMessage);
+                        if (offlinePlayer.getPlayer() != null) {
+                            String receiveMessage = utils.getCfgValue("ReceiveMessage", "&a%sender% has paid you %amount% dollar(s).");
+                            receiveMessage = receiveMessage.replace("%amount%", String.format("%.2f", amount));
+                            receiveMessage = receiveMessage.replace("%sender%", p.getName());
+                            offlinePlayer.getPlayer().sendMessage(receiveMessage);
+                        }
                         return true;
                     }
                 }
