@@ -41,11 +41,11 @@ public class Database {
         return true;
     }
 
-    public void insertBalance(OfflinePlayer p) {
+    public void insertBalance(OfflinePlayer player) {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
             PreparedStatement pstmt = conn.prepareStatement("insert into economy values(?,0)");
-            pstmt.setString(1, p.getUniqueId().toString());
+            pstmt.setString(1, player.getUniqueId().toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             plugin.getLogger().info(e.getMessage());
@@ -58,12 +58,12 @@ public class Database {
         }
     }
 
-    public void updateBalance(OfflinePlayer p, float bal) {
+    public void updateBalance(OfflinePlayer player, float bal) {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
             PreparedStatement pstmt = conn.prepareStatement("update economy set balance=round(?,2) where uuid=?");
             pstmt.setFloat(1, bal);
-            pstmt.setString(2, p.getUniqueId().toString());
+            pstmt.setString(2, player.getUniqueId().toString());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             plugin.getLogger().info(e.getMessage());
@@ -76,11 +76,11 @@ public class Database {
         }
     }
 
-    public float getBalance(OfflinePlayer p) {
+    public float getBalance(OfflinePlayer player) {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
             PreparedStatement pstmt = conn.prepareStatement("select balance from economy where uuid=?");
-            pstmt.setString(1, p.getUniqueId().toString());
+            pstmt.setString(1, player.getUniqueId().toString());
             ResultSet rs = pstmt.executeQuery();
             return rs.getFloat("balance");
         } catch (SQLException e) {

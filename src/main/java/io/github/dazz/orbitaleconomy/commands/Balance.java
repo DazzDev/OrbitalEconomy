@@ -24,14 +24,14 @@ public class Balance implements CommandExecutor {
             utils.printInvalidSenderMessage();
             return true;
         }
-        Player p = (Player) sender;
-        if (!p.hasPermission(utils.getCfgValue("BalancePermission", "orbitaleco.balance"))) {
-            utils.sendNoPermissionMsg(p);
+        Player player = (Player) sender;
+        if (!player.hasPermission(utils.getCfgValue("BalancePermission", "orbitaleco.balance"))) {
+            utils.sendNoPermissionMsg(player);
             return true;
         }
         String message = utils.getCfgValue("BalanceMessage", "&4Your balance is %bal% dollar(s).");
-        message = message.replace("%bal%", String.valueOf(database.getBalance(p)));
-        p.sendMessage(message);
+        message = message.replace("%bal%", String.valueOf(database.getBalance(player)));
+        player.sendMessage(message);
         return true;
     }
 }

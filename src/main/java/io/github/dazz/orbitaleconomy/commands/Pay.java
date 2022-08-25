@@ -30,43 +30,43 @@ public class Pay implements CommandExecutor {
             utils.printInvalidSenderMessage();
             return true;
         }
-        Player p = (Player) sender;
-        if (!p.hasPermission(utils.getCfgValue("PayPermission", "orbitaleco.pay"))) {
-            utils.sendNoPermissionMsg(p);
+        Player player = (Player) sender;
+        if (!player.hasPermission(utils.getCfgValue("PayPermission", "orbitaleco.pay"))) {
+            utils.sendNoPermissionMsg(player);
             return true;
         }
         if (args.length != 2) {
-            p.sendMessage(utils.getCfgValue("PayCorrectUsageMessage", "&cCorrect usage: /pay (user) (amount)."));
+            player.sendMessage(utils.getCfgValue("PayCorrectUsageMessage", "&cCorrect usage: /pay (user) (amount)."));
             return true;
         }
         for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            if (offlinePlayer.getName() == null || !Objects.equals(offlinePlayer.getName(), args[0]) || offlinePlayer.equals(p)) {
+            if (offlinePlayer.getName() == null || !Objects.equals(offlinePlayer.getName(), args[0]) || offlinePlayer.equals(player)) {
                 continue;
             }
             if (NumberUtils.isCreatable(args[1])) {
                 float amount = Float.parseFloat(args[1]);
                 if (amount < Float.MAX_VALUE && new BigDecimal(Float.toString(amount)).scale() < 3) {
-                    if (database.getBalance(p) >= amount && amount > 0) {
+                    if (database.getBalance(player) >= amount && amount > 0) {
                         database.updateBalance(offlinePlayer, database.getBalance(offlinePlayer) + amount);
-                        database.updateBalance(p, database.getBalance(p) - amount);
+                        database.updateBalance(player, database.getBalance(player) - amount);
                         String payMessage = utils.getCfgValue("PayMessage", "&aYou paid %amount% dollar(s) to %target%.");
                         payMessage = payMessage.replace("%amount%", String.format("%.2f", amount));
                         payMessage = payMessage.replace("%target%", offlinePlayer.getName());
-                        p.sendMessage(payMessage);
+                        player.sendMessage(payMessage);
                         if (offlinePlayer.getPlayer() != null) {
                             String receiveMessage = utils.getCfgValue("ReceiveMessage", "&a%sender% has paid you %amount% dollar(s).");
                             receiveMessage = receiveMessage.replace("%amount%", String.format("%.2f", amount));
-                            receiveMessage = receiveMessage.replace("%sender%", p.getName());
+                            receiveMessage = receiveMessage.replace("%sender%", player.getName());
                             offlinePlayer.getPlayer().sendMessage(receiveMessage);
                         }
                         return true;
                     }
                 }
             }
-            p.sendMessage(utils.getCfgValue("InvalidNumberMessage", "&cYou don't have that many dollars or the number you input is invalid."));
+            player.sendMessage(utils.getCfgValue("InvalidNumberMessage", "&cYou don't have that many dollars or the number you input is invalid."));
             return true;
         }
-        p.sendMessage(utils.getCfgValue("InvalidPlayerMessage", "&cYou can't pay dollars to that player."));
+        player.sendMessage(utils.getCfgValue("InvalidPlayerMessage", "&cYou can't pay dollars to that player."));
         return true;
     }
 }

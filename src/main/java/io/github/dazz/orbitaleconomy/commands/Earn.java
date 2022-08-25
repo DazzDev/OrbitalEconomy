@@ -26,14 +26,16 @@ public class Earn implements CommandExecutor {
             utils.printInvalidSenderMessage();
             return true;
         }
-        Player p = (Player) sender;
-        if (!p.hasPermission(utils.getCfgValue("EarnPermission", "orbitaleco.earn"))) {
-            utils.sendNoPermissionMsg(p);
+        Player player = (Player) sender;
+        if (!player.hasPermission(utils.getCfgValue("EarnPermission", "orbitaleco.earn"))) {
+            utils.sendNoPermissionMsg(player);
             return true;
         }
         int amount = ThreadLocalRandom.current().nextInt(1, 11);
-        database.updateBalance(p, database.getBalance(p) + amount);
-        p.sendMessage(utils.getCfgValue("EarnMessage", "&aYou just earned %amount% dollar(s).").replace("%amount%", amount + ".00"));
+        database.updateBalance(player, database.getBalance(player) + amount);
+        String message = utils.getCfgValue("EarnMessage", "&aYou just earned %amount% dollar(s).");
+        message = message.replace("%amount%", amount + ".00");
+        player.sendMessage(message);
         return true;
     }
 }

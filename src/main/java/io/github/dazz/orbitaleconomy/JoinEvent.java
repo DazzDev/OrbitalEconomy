@@ -14,8 +14,8 @@ public class JoinEvent implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player p = event.getPlayer();
         if (database.getBalance(p) == -1) database.insertBalance(p);
     }
 }

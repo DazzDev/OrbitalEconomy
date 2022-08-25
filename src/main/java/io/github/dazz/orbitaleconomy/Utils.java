@@ -24,7 +24,7 @@ public class Utils {
         logger.info(getCfgValue("InvalidSenderMessage", "This command is for players only."));
     }
 
-    public void sendNoPermissionMsg(Player p) {
-        p.sendMessage(getCfgValue("NoPermissionMessage", "&cYou don't have permission to do that."));
+    public void sendNoPermissionMsg(Player player) {
+        player.sendMessage(getCfgValue("NoPermissionMessage", "&cYou don't have permission to do that."));
     }
 }
